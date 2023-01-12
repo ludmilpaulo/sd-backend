@@ -4,6 +4,8 @@ import { BsFillCartFill,BsFillSaveFill } from 'react-icons/bs';
 import {TbTruckDelivery} from 'react-icons/tb'
 import {FaUserFriends, FaWallet} from 'react-icons/fa'
 import {MdFavorite, MdHelp} from 'react-icons/md'
+
+import { Link, useNavigate } from "react-router-dom";
 import background from "../assets/bg.png";
 
 interface Restaurant {
@@ -23,6 +25,10 @@ export default function Home() {
     const [masterDataSource, setMasterDataSource] = useState<Restaurant[]>([]);
 
     const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate();
+
+   
 
   const getRestaurant = async () => {
     try {
@@ -157,7 +163,16 @@ export default function Home() {
            <div className='absolute w-full h-full bg-black/50 rounded-xl text-white'>
              <p className='font-bold text-2xl px-2 pt-4'>{item.name}</p>
              <p className='px-2'>{item.phone}</p>
-             <button className='border-white bg-white text-black mx-2 absolute bottom-4'>Peça Agora</button>
+
+             <Link to={
+            `/Details/${item.id}?&${item.name}?`
+
+             }>
+             <button
+             className='border-white bg-white text-black mx-2 absolute bottom-4'>
+              Peça Agora
+              </button>
+              </Link>
            </div>
            <img
            className='max-h-[160px] md:max-h-[200px] w-full object-cover rounded-xl'
