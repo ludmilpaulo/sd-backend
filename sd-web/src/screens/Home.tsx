@@ -165,8 +165,7 @@ export default function Home() {
              <p className='px-2'>{item.phone}</p>
 
              <Link to={
-            `/Details/${item.id}?&${item.name}?`
-
+            `/Details/${item.id}`
              }>
              <button
              className='border-white bg-white text-black mx-2 absolute bottom-4'>
