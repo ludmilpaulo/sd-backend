@@ -4,6 +4,7 @@ import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import { useRouter } from 'next/router'
 
+
 import React, { useState, useEffect } from "react";
 import { AiOutlineMenu, AiOutlineSearch, AiOutlineClose, AiFillTag } from 'react-icons/ai';
 import { BsFillCartFill,BsFillSaveFill } from 'react-icons/bs';
@@ -11,8 +12,9 @@ import {TbTruckDelivery} from 'react-icons/tb'
 import {FaUserFriends, FaWallet} from 'react-icons/fa'
 import {MdFavorite, MdHelp} from 'react-icons/md'
 import background from "../assets/bg.png";
+import RestaurantItem from '@/components/RestaurantItem'
 
-const inter = Inter({ subsets: ['latin'] })
+
 
 interface Restaurant {
   id: number;
@@ -24,7 +26,7 @@ interface Restaurant {
 
 
 export default function Home() {
-    const [nav, setNav] = useState(false)
+    
 
     const [restaurantData, setRestaurantData] = useState<Restaurant[]>([]);
     const [search, setSearch] = useState("");
@@ -32,6 +34,7 @@ export default function Home() {
     const [masterDataSource, setMasterDataSource] = useState<Restaurant[]>([]);
 
     const [loading, setLoading] = useState(false);
+    const [nav, setNav] = useState(false)
 
     const getRestaurant = async () => {
       try {
@@ -81,8 +84,9 @@ export default function Home() {
     return (
       <>
    
+<div className='bg-cover w-full h-full bg-no-repeat bg-bg_image'>
 
-         <div className='max-w-[1640px] mx-auto flex justify-between items-center p-4'>
+<div className='max-w-[1640px] mx-auto flex justify-between items-center p-4'>
     {/* Left side */}
     <div className='flex items-center'>
       <div onClick={()=> setNav(!nav)} className='cursor-pointer'>
@@ -153,40 +157,16 @@ export default function Home() {
       </div>
   </div>
 
+
   <div className='max-w-[1640px] mx-auto p-4 py-12 grid md:grid-cols-3 gap-6'>
     {/* Card */}
-    {filteredDataSource.map((item, index) => (
-         <div className='rounded-xl relative'
-         key={index}
-         >
-         {/* Overlay */}
-         <div className='absolute w-full h-full bg-black/50 rounded-xl text-white'>
-           <p className='font-bold text-2xl px-2 pt-4'>{item.name}</p>
-           <p className='px-2'>{item.phone}</p>
-
-         
-           <button
-           className='border-white bg-white text-black mx-2 absolute bottom-4'>
-            Peça Agora
-            </button>
-       
-         </div>
-         <img
-         className='max-h-[160px] md:max-h-[200px] w-full object-cover rounded-xl'
-           src={item.logo}
-           alt='/'
-         />
-       </div>
-    )
-
-    )}
- 
-    {/* Card */}
    
-    {/* Card */}
+<RestaurantItem filteredDataSource={filteredDataSource}/>
 
   </div>
 
+
+  </div>
       </>
   );
 }
