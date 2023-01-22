@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import Image from "next/image";
 import {motion} from 'framer-motion'
+import { useDispatch, useSelector } from "react-redux";
 interface Meals{
     category: string;
     id : number; 
@@ -12,35 +13,85 @@ interface Meals{
 }
 
 
-const MenuItem = ({ resId, food, resName, resImage, foods } : { resId:any, food:any, resName:any, resImage:any, foods:any }) => {
+const MenuItem = ({ resId, food, resName, resImage, foods } : { resId:any, food:Meals, resName:any, resImage:any, foods:any }) => {
+
+  const dispatch = useDispatch();
 
 
+  const handleAddRemove = (id: any) => {
+    console.log("quatidde==>", qty) 
+
+  
+
+    const indexFromFood = foods.findIndex((x:any) => x.id === id);
+    const resIndex = cartItems.findIndex((item:any) => item.resName === resName);
+    const foodItem = foods[indexFromFood];
+    foodItem.quantity = qty;
+    //setQty(foodItem.quantity);
+    console.log('foods item',foodItem);
+
+    if (resIndex >= 0) {
+      const menuIndex = cartItems[resIndex].foods.findIndex(
+        (item:any) => item.id === id
+      );
+      if (menuIndex >= 0) {
+        let oldArrays = [...cartItems];
+        let oldfoods = [...oldArrays[resIndex].foods];
+        oldfoods.splice(menuIndex, 1);
+        oldArrays.splice(resIndex, 1);
+        let newArray = [
+          ...oldArrays,
+          { foods: oldfoods, resName, resImage, resId },
+        ];
+        console.log('nova array',newArray)
+        dispatch(updateBusket(newArray));
+      } else {
+        let oldArrays = [...cartItems];
+      
+        let newFoodArray = [...oldArrays[resIndex].foods, foodItem ];
+        oldArrays.splice(resIndex, 1);
+        foodItem.quantity = qty;
+        let updatedResArray = [
+          ...oldArrays,
+          { foods: newFoodArray, resName, resImage, resId },
+        ];
+        console.log('updated ', updatedResArray)
+        dispatch(updateBusket(updatedResArray));
+      }
+    } else {
+      let oldArrays = [...cartItems];
+      foodItem.quantity = qty;
+      let newResFoodArray = [
+        ...oldArrays,
+        {
+          foods: [{ ...foodItem}],
+          resName,
+          resImage,
+          resId,
+        },
+      ];
+      dispatch(updateBusket(newResFoodArray));
+    }
+  };
   
   
     return (
-      
-     
           <div className='border shadow-lg rounded-lg hover:scale-105 duration-300'>
             <img
-              src={food?.image}
+              src={food.image}
            
-              alt={food?.name}
+              alt={food.name}
               className='w-full h-[200px] object-cover rounded-t-lg'
             />
             <div className='flex justify-between px-2 py-4'>
-              <p className='font-bold'>{food?.name}</p>
+              <p className='font-bold'>{food.name}</p>
               <p>
-                <span className='bg-orange-500 text-white p-1 rounded-full'>
-                  {food?.price} Kz
+                <span className='bg-[#004AAD] text-white p-1 rounded-full'>
+                  {food.price} Kz
                 </span>
               </p>
             </div>
-            <div className="flex flex-col md:flex-row gap-x-5 md:gap-y-6 mt-5 items-center ">
-              <motion.button        whileTap={{ scale: 0.8 }} className=" w-fit bg-[#18181B] text-white text-2xl text-center py-8 font-bold rounded-lg hover:bg-[#282828] px-11">
-                Add to cart
-              </motion.button>
-             
-            </div>
+            
           </div>
 
 

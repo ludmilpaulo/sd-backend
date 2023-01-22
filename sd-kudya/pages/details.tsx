@@ -20,6 +20,9 @@ interface Meals{
 
 export default function details() {
     // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [foods, setFoods] = useState<Meals[]>([]);
+
+    const [data, setData ] = useState<Meals[]>([]);
     const router = useRouter();
     const { restaurantId, image_url, name, address, phone } = router.query;
 
@@ -52,12 +55,7 @@ Geocode.fromAddress(restAddress).then(
   
 
   
-
-  
-
-     const [foods, setFoods] = useState<Meals[]>([]);
-
-    const [data, setData ] = useState<Meals[]>([]);
+   
 
       //   Filter Type burgers/pizza/etc
       const filterType = (category: string) => {
@@ -69,7 +67,7 @@ Geocode.fromAddress(restAddress).then(
       };
     
       //   Filter by price
-      const filterPrice = (price) => {
+      const filterPrice = (price: number) => {
         setFoods(
             data.filter((item) => {
             return item.price === price;
@@ -93,8 +91,7 @@ Geocode.fromAddress(restAddress).then(
       
        useEffect(() => {
         fetchMeals();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        },[]);
+        },[data]);
 
 
 console.log(foods);
