@@ -28,6 +28,8 @@ export default function details() {
     const [restlatitude, setRestLatitude] = useState(0);
     const [mapActive, setMapActive] = useState(false);
 
+    const [rangeValue, setRangeValue] = useState<number>(122);
+
     const coordinates = {
         latitude: restlatitude,
         longitude: restlongitude,
@@ -176,7 +178,20 @@ console.log(foods);
       </div>
 
       {/* Display foods */}
-     <MenuItem foods={foods} />
+      <div className='grid grid-cols-2 lg:grid-cols-4 gap-6 pt-4'>
+      {foods?.map((food) => {
+              return (
+                <MenuItem
+                  key={food.id}
+                  resId={restaurantId}
+                  foods={foods}
+                  food={food}
+                  resName={name}
+                  resImage={image_url}
+                />
+              );
+            })}
+        </div>
     </div>
 
    
